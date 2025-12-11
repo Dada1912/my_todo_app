@@ -1,16 +1,30 @@
-# my_todo_app
+name: Build Todo App
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.0'
+        channel: 'stable'
+    
+    # ಇಲ್ಲಿ ಬದಲಾವಣೆ ಮಾಡಲಾಗಿದೆ: Unique Name ಕೊಡಲಾಗಿದೆ
+    - name: Build Unique App 🏗️
+      run: |
+        flutter create --org com.dada --project-name my_todo clean_app
+        cp lib/main.dart clean_app/lib/main.dart
+        cd clean_app
+        flutter build apk --release --no-shrink
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: todo-app-final
+        path: clean_app/build/app/outputs/flutter-apk/app-release.apk
+        
