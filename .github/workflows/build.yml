@@ -14,10 +14,10 @@ jobs:
         flutter-version: '3.19.0'
         channel: 'stable'
     
-    # ಹಳೆಯದನ್ನು ಅಳಿಸಿ ಹೊಸದಾಗಿ ಬಿಲ್ಡ್ ಮಾಡುವ ಮ್ಯಾಜಿಕ್
-    - name: Build Clean App 🏗️
+    # ಇಲ್ಲಿ ಬದಲಾವಣೆ ಮಾಡಲಾಗಿದೆ: Unique Name ಕೊಡಲಾಗಿದೆ
+    - name: Build Unique App 🏗️
       run: |
-        flutter create clean_app
+        flutter create --org com.dada --project-name my_todo clean_app
         cp lib/main.dart clean_app/lib/main.dart
         cd clean_app
         flutter build apk --release --no-shrink
@@ -25,5 +25,6 @@ jobs:
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: todo-app-apk
+        name: todo-app-final
         path: clean_app/build/app/outputs/flutter-apk/app-release.apk
+        
